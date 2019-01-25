@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+
+    <xsd:element name="invoices">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="concode" minOccurs="1" maxOccurs="1" type="Max5Text"/>
+                <xsd:element name="dda" minOccurs="1" maxOccurs="1" type="Max35Text"/>
+                <xsd:sequence minOccurs="1" maxOccurs="unbounded">
+                	<xsd:choice>
+                	    <xsd:element name="invoice" type="Invoice"/>
+                	   <!-- <xsd:element name="creditnote" type="CreditNote"/>-->
+                	</xsd:choice>
+                </xsd:sequence>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+	<xsd:complexType name="Invoice">
+    	<xsd:all>
+			<xsd:element name="invoiceType" minOccurs="0" maxOccurs="1"  type="InvoiceType"></xsd:element>
+    		<xsd:element name="invoiceref" minOccurs="1" maxOccurs="1" type="Max35Text"/>
+   			<xsd:element name="creationdate" minOccurs="1" maxOccurs="1" type="xsd:date"/> <!-- ISO date: YYYY-MM-DD -->
+   			<xsd:element name="createdby" minOccurs="1" maxOccurs="1" type="Max255Text"/>
+   			<xsd:element name="comment" minOccurs="0" maxOccurs="1" type="Max512Text"/>
+   			<xsd:element name="amount" minOccurs="1" maxOccurs="1" type="Max18Dec"/>
+    	   	<xsd:element name="account" minOccurs="1" maxOccurs="1" type="Max35Text"/>
+    		<xsd:element name="additionalref" minOccurs="0" maxOccurs="1" type="Max255Text"/>
+    		<xsd:element name="duedate" minOccurs="1" maxOccurs="1" type="xsd:date"/> <!-- ISO date: YYYY-MM-DD -->
+    		<xsd:element name="payer" minOccurs="1" maxOccurs="1" type="Payer"/>
+		</xsd:all>
+	</xsd:complexType>
+
+    <!--<xsd:complexType name="CreditNote">
+       	<xsd:all>
+       	    <xsd:element name="invoiceref" minOccurs="1" maxOccurs="1" type="Max35Text"/>
+   			<xsd:element name="creationdate" minOccurs="1" maxOccurs="1" type="xsd:date"/> &lt;!&ndash; ISO date: YYYY-MM-DD &ndash;&gt;
+   			<xsd:element name="createdby" minOccurs="1" maxOccurs="1" type="Max255Text"/>
+   			<xsd:element name="comment" minOccurs="0" maxOccurs="1" type="Max512Text"/>
+   			<xsd:element name="amount" minOccurs="1" maxOccurs="1" type="Max18Dec"/>
+    		<xsd:element name="debitinvoiceref" minOccurs="1" maxOccurs="1" type="Max35Text"/>
+    	</xsd:all>
+    </xsd:complexType>
+-->
+    <xsd:complexType name="Payer">
+        <xsd:all>
+			<xsd:element name="payercustomernumber" minOccurs="1" maxOccurs="1" type="Max35Text"/>
+			<xsd:element name="payeraccountnumber" minOccurs="0" maxOccurs="1" type="Max35Text"/>
+			<xsd:element name="name" minOccurs="1" maxOccurs="1" type="Max255Text"/>
+			<xsd:element name="address" minOccurs="0" maxOccurs="1" type="Max255Text"/>
+			<xsd:element name="city" minOccurs="0" maxOccurs="1" type="Max255Text"/>
+			<xsd:element name="postcode" minOccurs="0" maxOccurs="1" type="Max35Text"/>
+			<xsd:element name="country" minOccurs="0" maxOccurs="1" type="Max35Text"/>
+			<xsd:element name="nationalid" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="biccode" minOccurs="0" maxOccurs="1" type="Max35Text"/>
+			<xsd:element name="transactiontype" minOccurs="0" maxOccurs="1"	type="Max35Text"/>
+		</xsd:all>
+	</xsd:complexType>
+
+    <xsd:simpleType name="Max5Text">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="5"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Max35Text">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="35"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Max255Text">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="255"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Max512Text">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="512"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+    <xsd:simpleType name="Max18Dec"> <!-- Fractional digits separated by dot -->
+        <xsd:restriction base="xsd:decimal">
+            <xsd:minInclusive value="0" />
+            <xsd:maxInclusive value="999999999999999999" />
+        </xsd:restriction>
+    </xsd:simpleType>
+
+	<xsd:simpleType name="InvoiceType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CREN"/>
+			<xsd:enumeration value="CINV"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
